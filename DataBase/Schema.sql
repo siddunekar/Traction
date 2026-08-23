@@ -35,7 +35,7 @@ CREATE TABLE comments(
     FOREIGN KEY(user_id) REFERENCES users(id),
     post_id INT,
     FOREIGN KEY(post_id) REFERENCES posts(id),
-    content VARCHAR(500)
+    content VARCHAR(500),
     created_at TIMESTAMP
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE likes(
     post_id INT,
     FOREIGN KEY(post_id) REFERENCES posts(id),
     PRIMARY KEY(user_id, post_id),
-    created_id TIMESTAMP
+    created_at TIMESTAMP
 );
 
 CREATE TABLE search_history(
@@ -63,7 +63,7 @@ CREATE TABLE connections(
     FOREIGN KEY(sender_id) REFERENCES users(id),
     receiver_id INT,
     FOREIGN KEY(receiver_id) REFERENCES users(id),
-    status VARCHAR(10),
+    status VARCHAR(20),
     created_at TIMESTAMP
 );
 
@@ -86,11 +86,6 @@ CREATE TABLE interests(
     category VARCHAR(50)
 );
 
-user_id
-status
-applied_at
-reviewed_at
-reviewed_by
 
 CREATE TABLE founder_applications(
     id INT PRIMARY KEY,
@@ -99,7 +94,7 @@ CREATE TABLE founder_applications(
     status VARCHAR(20),
     applied_at TIMESTAMP,
     reviewed_by INT,
-    FOREIGN KEY(reviewed_by) REFERENCES users(id)
+    FOREIGN KEY(reviewed_by) REFERENCES users(id),
     reviewed_at TIMESTAMP
 );
 
