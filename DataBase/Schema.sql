@@ -131,3 +131,5 @@ CREATE TABLE notifications(
 
     created_at TIMESTAMP
 );
+
+
