@@ -1,45 +1,19 @@
-package com.traction.backend.entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.traction.backend.dto;
 
-
-
-@Entity
-@Table(name="users")
-public class User {
-    @Id
-    private int id;
+public class RegisterRequest {
 
     private String username;
     private String email;
     private String phone;
-
-    @Column(name="password_hash")
-    private String passwordHash;
-
+    private String password;
     private String location;
     private String occupation;
-
-    @Column(name="investment_min")
     private Integer investmentMin;
-
-    @Column(name="investment_max")
     private Integer investmentMax;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
     }
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -61,12 +35,12 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getLocation() {
@@ -100,5 +74,4 @@ public class User {
     public void setInvestmentMax(Integer investmentMax) {
         this.investmentMax = investmentMax;
     }
-    
 }
