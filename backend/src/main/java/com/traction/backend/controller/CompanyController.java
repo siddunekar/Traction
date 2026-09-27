@@ -1,12 +1,16 @@
 package com.traction.backend.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.traction.backend.dto.CompanyRequest;
-import com.traction.backend.entity.Company;
+import com.traction.backend.dto.CompanyResponse;
 import com.traction.backend.service.CompanyService;
 
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CompanyController {
@@ -18,10 +22,16 @@ public class CompanyController {
     }
 
     @PostMapping("/companies/{founderId}")
-    public Company createCompany(
-            @PathVariable Long founderId,
+    public CompanyResponse createCompany(
+            @PathVariable Integer founderId,
             @Valid @RequestBody CompanyRequest request) {
 
         return companyService.createCompany(founderId, request);
     }
+
+    @GetMapping("/companies/{id}")
+    public CompanyResponse getCompany(@PathVariable Integer id) {
+        return companyService.getCompany(id);
+    }
+
 }

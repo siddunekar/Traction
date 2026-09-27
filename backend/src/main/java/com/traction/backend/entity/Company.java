@@ -16,10 +16,10 @@ public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
     @Column(name = "founder_id")
-    private Long founderId;
+    private Integer founderId;
 
 	private String name;
     private String description;
@@ -36,19 +36,19 @@ public class Company {
 
 
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-    public Long getFounderId() {
+    public Integer getFounderId() {
         return founderId;
     }
 
-    public void setFounderId(Long founderId) {
+    public void setFounderId(Integer founderId) {
         this.founderId = founderId;
     }
 
