@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 import com.traction.backend.dto.CompanyRequest;
 import com.traction.backend.dto.CompanyResponse;
@@ -32,6 +33,16 @@ public class CompanyController {
     @GetMapping("/companies/{id}")
     public CompanyResponse getCompany(@PathVariable Integer id) {
         return companyService.getCompany(id);
+    }
+
+    @GetMapping("/companies")
+    public List<CompanyResponse> getAllCompanies() {
+        return companyService.getAllCompanies();
+    }
+
+    @GetMapping("/companies/{name}") 
+    public CompanyResponse getCompany(@PathVariable String name) {
+        return companyService.getCompany(name);
     }
 
 }

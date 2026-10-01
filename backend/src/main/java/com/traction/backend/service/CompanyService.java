@@ -1,6 +1,8 @@
 package com.traction.backend.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -79,4 +81,28 @@ public class CompanyService {
 
         return response;
     }
+
+    public List<CompanyResponse> getAllCompanies() {
+        List<Company> companies = companyRepository.findByVerificationStatus("VERIFIED");
+        List<CompanyResponse> responses = new ArrayList<>();
+
+        for(Company company:companies) {
+
+            CompanyResponse response = new CompanyResponse();
+
+            response.setId(company.getId());
+            response.setFounderId(company.getFounderId());
+            response.setName(company.getName());
+            response.setCategory(company.getCategory());
+            response.setField(company.getField());
+            response.setWebsite(company.getWebsite());
+            response.setVerificationStatus(company.getVerificationStatus());
+
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+
 }
