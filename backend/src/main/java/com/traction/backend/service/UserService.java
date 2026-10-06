@@ -2,7 +2,7 @@ package com.traction.backend.service;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,12 +16,13 @@ import com.traction.backend.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-
-    public UserService(UserRepository userRepository) {
+   public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder,JwtService jwtService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public UserResponse createUser(RegisterRequest request) {
@@ -92,15 +93,20 @@ public class UserService {
             );
         }
 
+        String token = jwtService.generateToken(
+            user.getId(),
+            user.getEmail()
+        );
+
+
         UserResponse response = new UserResponse();
 
         response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setEmail(user.getEmail());
+        response.setToken(token);
 
         return response;
     }
-
-    
 
 }

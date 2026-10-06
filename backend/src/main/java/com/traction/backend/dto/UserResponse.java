@@ -4,6 +4,8 @@ public class UserResponse{
     private int id;
     private String username;
     private String email;
+    private String token;
+
 
     public int getId() {
         return id;
@@ -26,6 +28,14 @@ public class UserResponse{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

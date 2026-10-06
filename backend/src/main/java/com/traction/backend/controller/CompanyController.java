@@ -1,11 +1,16 @@
 package com.traction.backend.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 import com.traction.backend.dto.CompanyRequest;
 import com.traction.backend.dto.CompanyResponse;
@@ -40,9 +45,29 @@ public class CompanyController {
         return companyService.getAllCompanies();
     }
 
-    @GetMapping("/companies/{name}") 
-    public CompanyResponse getCompany(@PathVariable String name) {
-        return companyService.getCompany(name);
+ 
+    @GetMapping("/companies/search")
+    public List<CompanyResponse> searchCompanies(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) String location,
+        @RequestParam(required = false) String field
+    ) {
+        return companyService.searchCompanies(name,category,location,field);
+    }
+
+    @PutMapping("/companies/{id}")
+    public CompanyResponse updateCompany(
+        @PathVariable Integer id,
+        @Valid @RequestBody CompanyRequest request) {
+
+        return companyService.updateCompany(id, request);
+    }
+
+    @DeleteMapping("/companies/{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable Integer id) {
+        companyService.deleteCompany(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

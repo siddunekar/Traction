@@ -104,5 +104,78 @@ public class CompanyService {
         return responses;
     }
 
+    public List<CompanyResponse> searchCompanies(
+        String name,
+        String field,
+        String category,
+        String location) {
+        List<Company> companies = companyRepository.searchCompanies(name,category,location,field);
+        List<CompanyResponse> responses = new  ArrayList<>();
+
+        for(Company company:companies) {
+
+            CompanyResponse response = new CompanyResponse();
+
+            response.setId(company.getId());
+            response.setFounderId(company.getFounderId());
+            response.setName(company.getName());
+            response.setCategory(company.getCategory());
+            response.setField(company.getField());
+            response.setWebsite(company.getWebsite());
+            response.setVerificationStatus(company.getVerificationStatus());
+
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+    public CompanyResponse updateCompany(Integer id, CompanyRequest request) {
+
+        Optional<Company> companyOptional = companyRepository.findById(id);
+
+        if (companyOptional.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Company doesn't exist");
+        }
+
+        Company company = companyOptional.get();
+
+        company.setName(request.getName());
+        company.setLocation(request.getLocation());
+        company.setCategory(request.getCategory());
+        company.setField(request.getField());
+        company.setDescription(request.getDescription());
+        company.setWebsite(request.getWebsite());
+
+        Company updatedCompany = companyRepository.save(company);
+
+        CompanyResponse response = new CompanyResponse();
+
+        response.setId(updatedCompany.getId());
+        response.setFounderId(updatedCompany.getFounderId());
+        response.setName(updatedCompany.getName());
+        response.setCategory(updatedCompany.getCategory());
+        response.setField(updatedCompany.getField());
+        response.setWebsite(updatedCompany.getWebsite());
+        response.setVerificationStatus(updatedCompany.getVerificationStatus());
+
+        return response;
+    }
+
+    public void deleteCompany(Integer id) {
+
+        Optional<Company> companyOptional = companyRepository.findById(id);
+
+        if (companyOptional.isEmpty()) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Company doesn't exist"
+            );
+        }
+
+        companyRepository.delete(companyOptional.get());
+    }
+
 
 }
