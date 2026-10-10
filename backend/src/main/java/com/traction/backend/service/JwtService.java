@@ -1,11 +1,15 @@
 package com.traction.backend.service;
-import org.springframework.beans.factory.annotation.Value;
 import java.nio.charset.StandardCharsets;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
+import java.util.Date;
+
 import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
@@ -20,12 +24,16 @@ public class JwtService {
     }
 
     public String generateToken(Integer userId, String email) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + 1000L * 60 * 60);
 
         return Jwts.builder()
-            .subject(String.valueOf(userId))
-            .claim("email", email)
-            .signWith(getSigningKey())
-            .compact();
+                .subject(String.valueOf(userId))
+                .claim("email", email)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(getSigningKey())
+                .compact();
     }
 
     public Claims extractClaims(String token) {

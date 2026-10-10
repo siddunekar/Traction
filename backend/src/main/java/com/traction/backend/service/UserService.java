@@ -44,7 +44,7 @@ public class UserService {
                 HttpStatus.CONFLICT,
                 "phone is already in use");
         }
-        
+
         User user = new User();
 
         user.setUsername(request.getUsername());

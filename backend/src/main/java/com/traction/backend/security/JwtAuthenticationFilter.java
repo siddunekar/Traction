@@ -1,6 +1,7 @@
 package com.traction.backend.security;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.traction.backend.service.JwtService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,20 +35,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 
         String authHeader = request.getHeader("Authorization");
 
+        
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            Claims claims = jwtService.extractClaims(token);
-            Integer userId = Integer.valueOf(claims.getSubject());
 
-            UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                    userId,
-                    null,
-                    null
-            );
+            try {
+                Claims claims = jwtService.extractClaims(token);
+                Integer userId = Integer.valueOf(claims.getSubject());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userId,
+                                null,
+                                Collections.emptyList()
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (JwtException | IllegalArgumentException e) {
+                SecurityContextHolder.clearContext();
+                response.sendError(
+                        HttpServletResponse.SC_UNAUTHORIZED,
+                        "Invalid or expired token"
+                );
+                return;
+            }
+    
+
+            filterChain.doFilter(request, response);
         }
+    }
 
-    filterChain.doFilter(request, response);    }
 }

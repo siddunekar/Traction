@@ -2,6 +2,7 @@ package com.traction.backend.controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.traction.backend.dto.LoginRequest;
 import com.traction.backend.dto.RegisterRequest;
 import com.traction.backend.dto.UserResponse;
@@ -28,5 +29,4 @@ public class UserController {
         return userService.loginUser(request);
     }
 
-    
 }
