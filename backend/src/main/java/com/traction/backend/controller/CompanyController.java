@@ -3,6 +3,7 @@ package com.traction.backend.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,13 +28,13 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @PostMapping("/companies/{founderId}")
-    public CompanyResponse createCompany(
-            @PathVariable Integer founderId,
-            @Valid @RequestBody CompanyRequest request) {
-
-        return companyService.createCompany(founderId, request);
-    }
+   @PostMapping("/companies")
+   public CompanyResponse createCompany(
+           Authentication authentication,
+           @Valid @RequestBody CompanyRequest request) {
+       Integer founderId = (Integer) authentication.getPrincipal();
+       return companyService.createCompany(founderId, request);
+   }
 
     @GetMapping("/companies/{id}")
     public CompanyResponse getCompany(@PathVariable Integer id) {
@@ -58,15 +59,24 @@ public class CompanyController {
 
     @PutMapping("/companies/{id}")
     public CompanyResponse updateCompany(
-        @PathVariable Integer id,
-        @Valid @RequestBody CompanyRequest request) {
+            @PathVariable Integer id,
+            Authentication authentication,
+            @Valid @RequestBody CompanyRequest request) {
 
-        return companyService.updateCompany(id, request);
-    }
+            Integer founderId = (Integer) authentication.getPrincipal();
+
+        return companyService.updateCompany(id, founderId, request);
+    }   
 
     @DeleteMapping("/companies/{id}")
-    public ResponseEntity<Void> deleteCompany(@PathVariable Integer id) {
-        companyService.deleteCompany(id);
+    public ResponseEntity<Void> deleteCompany(
+            @PathVariable Integer id,
+            Authentication authentication) {
+
+        Integer founderId = (Integer) authentication.getPrincipal();
+
+        companyService.deleteCompany(id, founderId);
+
         return ResponseEntity.noContent().build();
     }
 

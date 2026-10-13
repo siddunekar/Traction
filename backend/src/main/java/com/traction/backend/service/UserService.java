@@ -106,6 +106,8 @@ public class UserService {
         response.setEmail(user.getEmail());
         response.setToken(token);
 
+        System.out.println("LOGIN RESPONSE TOKEN: " + (response.getToken() != null));
+
         return response;
     }
 

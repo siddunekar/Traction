@@ -26,7 +26,13 @@ public class UserController {
 
     @PostMapping("/login")
     public UserResponse loginUser(@Valid @RequestBody LoginRequest request) {
-        return userService.loginUser(request);
+        System.out.println("LOGIN CONTROLLER REACHED");
+
+        UserResponse response = userService.loginUser(request);
+
+        System.out.println("RESPONSE OBJECT IS NULL: " + (response == null));
+
+        return response;
     }
 
 }

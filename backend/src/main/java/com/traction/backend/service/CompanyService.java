@@ -130,7 +130,7 @@ public class CompanyService {
         return responses;
     }
 
-    public CompanyResponse updateCompany(Integer id, CompanyRequest request) {
+    public CompanyResponse updateCompany(Integer id, Integer founderId, CompanyRequest request) {
 
         Optional<Company> companyOptional = companyRepository.findById(id);
 
@@ -140,6 +140,12 @@ public class CompanyService {
         }
 
         Company company = companyOptional.get();
+        if (!company.getFounderId().equals(founderId)) {
+            throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                    "You are not allowed to update this company"
+            );
+        }
 
         company.setName(request.getName());
         company.setLocation(request.getLocation());
@@ -163,7 +169,7 @@ public class CompanyService {
         return response;
     }
 
-    public void deleteCompany(Integer id) {
+    public void deleteCompany(Integer id, Integer founderId) {
 
         Optional<Company> companyOptional = companyRepository.findById(id);
 
@@ -173,6 +179,15 @@ public class CompanyService {
                 "Company doesn't exist"
             );
         }
+        
+        Company company = companyOptional.get();
+
+        if (!company.getFounderId().equals(founderId)) {
+            throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                "You are not allowed to delete this company"
+        );
+}
 
         companyRepository.delete(companyOptional.get());
     }
