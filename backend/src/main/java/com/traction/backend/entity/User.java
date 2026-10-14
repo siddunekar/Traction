@@ -26,6 +26,17 @@ public class User {
     private String location;
     private String occupation;
 
+    private String bio;
+
+    @Column(name = "profile_photo_url")
+    private String profilePhotoUrl;
+
+    @Column(name = "linkedin_url")
+    private String linkedinUrl;
+
+    @Column(name = "website")
+    private String website;
+
     @Column(name="investment_min")
     private Integer investmentMin;
 
@@ -43,7 +54,6 @@ public class User {
     public String getUsername() {
         return username;
     }
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -104,5 +114,12 @@ public class User {
     public void setInvestmentMax(Integer investmentMax) {
         this.investmentMax = investmentMax;
     }
-    
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 }

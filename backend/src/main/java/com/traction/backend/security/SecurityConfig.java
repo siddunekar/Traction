@@ -33,6 +33,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/companies/search").permitAll()
                         .requestMatchers(HttpMethod.GET, "/companies/{id}").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/me/profile").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/me/profile").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/{id}/profile").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
