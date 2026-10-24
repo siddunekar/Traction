@@ -36,6 +36,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/me/profile").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users/me/profile").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/{id}/profile").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/opportunities", "/opportunities/company/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/opportunities").authenticated()
+                        .requestMatchers("/applications/**").authenticated()
 
                         .anyRequest().authenticated()
                 )
