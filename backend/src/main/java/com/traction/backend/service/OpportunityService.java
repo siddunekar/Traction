@@ -34,57 +34,78 @@ public class OpportunityService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Company not found"));
 
-        if (!company.getFounderId().equals(founderId)) {
+        if (company.getFounderId() == null
+                || !company.getFounderId().equals(founderId)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "You do not own this company");
         }
 
-        if (!"VERIFIED".equalsIgnoreCase(company.getVerificationStatus())) {
+        if (!"VERIFIED".equalsIgnoreCase(
+                company.getVerificationStatus())) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "Only verified companies can post opportunities");
         }
 
+        if (request.getMinimumAmount() != null
+                && request.getMaximumAmount() != null
+                && request.getMinimumAmount()
+                        .compareTo(request.getMaximumAmount()) > 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Minimum amount cannot exceed maximum amount");
+        }
+
         Opportunity opportunity = new Opportunity();
         opportunity.setCompanyId(company.getId());
+        opportunity.setInterestId(request.getInterestId());
         opportunity.setTitle(request.getTitle());
         opportunity.setDescription(request.getDescription());
-        opportunity.setOpportunityType(request.getOpportunityType());
-        opportunity.setFundingAmount(request.getFundingAmount());
+        opportunity.setMinimumAmount(request.getMinimumAmount());
+        opportunity.setMaximumAmount(request.getMaximumAmount());
+        opportunity.setStatus("OPEN");
 
         return mapToResponse(opportunityRepository.save(opportunity));
     }
 
     public List<OpportunityResponse> getAllOpportunities() {
-        return opportunityRepository.findAll()
+        return opportunityRepository
+                .findOpenOpportunitiesFromVerifiedCompanies()
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
     }
 
-    public List<OpportunityResponse> getCompanyOpportunities(
-            Integer companyId) {
+public List<OpportunityResponse> getCompanyOpportunities(
+        Integer companyId) {
 
-        if (!companyRepository.existsById(companyId)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Company not found");
-        }
+    Company company = companyRepository.findById(companyId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Company not found"));
 
-        return opportunityRepository.findByCompanyId(companyId)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+    if (!"VERIFIED".equalsIgnoreCase(
+            company.getVerificationStatus())) {
+        return List.of();
     }
+
+    return opportunityRepository
+            .findByCompanyIdAndStatusIgnoreCase(companyId, "OPEN")
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
 
     private OpportunityResponse mapToResponse(Opportunity opportunity) {
         OpportunityResponse response = new OpportunityResponse();
         response.setId(opportunity.getId());
         response.setCompanyId(opportunity.getCompanyId());
+        response.setInterestId(opportunity.getInterestId());
         response.setTitle(opportunity.getTitle());
         response.setDescription(opportunity.getDescription());
-        response.setOpportunityType(opportunity.getOpportunityType());
-        response.setFundingAmount(opportunity.getFundingAmount());
+        response.setMinimumAmount(opportunity.getMinimumAmount());
+        response.setMaximumAmount(opportunity.getMaximumAmount());
+        response.setStatus(opportunity.getStatus());
         response.setCreatedAt(opportunity.getCreatedAt());
         return response;
     }

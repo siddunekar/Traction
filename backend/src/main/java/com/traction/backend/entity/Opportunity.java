@@ -1,9 +1,15 @@
-
 package com.traction.backend.entity;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "company_opportunities")
@@ -13,27 +19,38 @@ public class Opportunity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "company_id", nullable = false)
+    @Column(name = "company_id")
     private Integer companyId;
 
-    @Column(nullable = false)
+    @Column(name = "interest_id")
+    private Integer interestId;
+
+    @Column(length = 100)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(length = 5000)
     private String description;
 
-    @Column(name = "opportunity_type", nullable = false)
-    private String opportunityType;
+    @Column(name = "minimum_amount", precision = 15, scale = 2)
+    private BigDecimal minimumAmount;
 
-    @Column(name = "funding_amount")
-    private BigDecimal fundingAmount;
+    @Column(name = "maximum_amount", precision = 15, scale = 2)
+    private BigDecimal maximumAmount;
+
+    @Column(length = 20)
+    private String status;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (status == null) {
+            status = "OPEN";
+        }
     }
 
     public Integer getId() {
@@ -46,6 +63,14 @@ public class Opportunity {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Integer getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Integer interestId) {
+        this.interestId = interestId;
     }
 
     public String getTitle() {
@@ -64,20 +89,28 @@ public class Opportunity {
         this.description = description;
     }
 
-    public String getOpportunityType() {
-        return opportunityType;
+    public BigDecimal getMinimumAmount() {
+        return minimumAmount;
     }
 
-    public void setOpportunityType(String opportunityType) {
-        this.opportunityType = opportunityType;
+    public void setMinimumAmount(BigDecimal minimumAmount) {
+        this.minimumAmount = minimumAmount;
     }
 
-    public BigDecimal getFundingAmount() {
-        return fundingAmount;
+    public BigDecimal getMaximumAmount() {
+        return maximumAmount;
     }
 
-    public void setFundingAmount(BigDecimal fundingAmount) {
-        this.fundingAmount = fundingAmount;
+    public void setMaximumAmount(BigDecimal maximumAmount) {
+        this.maximumAmount = maximumAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

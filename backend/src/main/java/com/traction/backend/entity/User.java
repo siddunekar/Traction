@@ -43,6 +43,8 @@ public class User {
     @Column(name="investment_max")
     private Integer investmentMax;
 
+
+
     public int getId() {
         return id;
     }
@@ -122,4 +124,30 @@ public class User {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    
+    public String getProfilePhotoUrl() {
+        return profilePhotoUrl;
+    }
+
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl = profilePhotoUrl;
+    }
+
+    public String getLinkedinUrl() {
+        return linkedinUrl;
+    }
+
+    public void setLinkedinUrl(String linkedinUrl) {
+        this.linkedinUrl = linkedinUrl;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
 }

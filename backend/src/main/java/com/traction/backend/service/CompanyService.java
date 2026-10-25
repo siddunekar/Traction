@@ -104,31 +104,34 @@ public class CompanyService {
         return responses;
     }
 
+
     public List<CompanyResponse> searchCompanies(
-        String name,
-        String field,
-        String category,
-        String location) {
-        List<Company> companies = companyRepository.searchCompanies(name,category,location,field);
-        List<CompanyResponse> responses = new  ArrayList<>();
+            String name,
+            String category,
+            String location,
+            String field) {
 
-        for(Company company:companies) {
+        List<Company> companies =
+            companyRepository.searchCompanies(name, category, location, field);
 
+        List<CompanyResponse> responses = new ArrayList<>();
+
+        for (Company company : companies) {
             CompanyResponse response = new CompanyResponse();
 
-            response.setId(company.getId());
-            response.setFounderId(company.getFounderId());
-            response.setName(company.getName());
-            response.setCategory(company.getCategory());
-            response.setField(company.getField());
-            response.setWebsite(company.getWebsite());
-            response.setVerificationStatus(company.getVerificationStatus());
+        response.setId(company.getId());
+        response.setFounderId(company.getFounderId());
+        response.setName(company.getName());
+        response.setCategory(company.getCategory());
+        response.setField(company.getField());
+        response.setWebsite(company.getWebsite());
+        response.setVerificationStatus(company.getVerificationStatus());
 
-            responses.add(response);
-        }
-
-        return responses;
+        responses.add(response);
     }
+
+    return responses;
+}
 
     public CompanyResponse updateCompany(Integer id, Integer founderId, CompanyRequest request) {
 

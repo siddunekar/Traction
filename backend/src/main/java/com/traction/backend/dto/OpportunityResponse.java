@@ -8,10 +8,12 @@ public class OpportunityResponse {
 
     private Integer id;
     private Integer companyId;
+    private Integer interestId;
     private String title;
     private String description;
-    private String opportunityType;
-    private BigDecimal fundingAmount;
+    private BigDecimal minimumAmount;
+    private BigDecimal maximumAmount;
+    private String status;
     private LocalDateTime createdAt;
 
     public Integer getId() {
@@ -30,6 +32,14 @@ public class OpportunityResponse {
         this.companyId = companyId;
     }
 
+    public Integer getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Integer interestId) {
+        this.interestId = interestId;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -46,20 +56,28 @@ public class OpportunityResponse {
         this.description = description;
     }
 
-    public String getOpportunityType() {
-        return opportunityType;
+    public BigDecimal getMinimumAmount() {
+        return minimumAmount;
     }
 
-    public void setOpportunityType(String opportunityType) {
-        this.opportunityType = opportunityType;
+    public void setMinimumAmount(BigDecimal minimumAmount) {
+        this.minimumAmount = minimumAmount;
     }
 
-    public BigDecimal getFundingAmount() {
-        return fundingAmount;
+    public BigDecimal getMaximumAmount() {
+        return maximumAmount;
     }
 
-    public void setFundingAmount(BigDecimal fundingAmount) {
-        this.fundingAmount = fundingAmount;
+    public void setMaximumAmount(BigDecimal maximumAmount) {
+        this.maximumAmount = maximumAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

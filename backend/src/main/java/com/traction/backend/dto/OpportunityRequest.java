@@ -12,17 +12,19 @@ public class OpportunityRequest {
     @NotNull
     private Integer companyId;
 
+    private Integer interestId;
+
     @NotBlank
     private String title;
 
     @NotBlank
     private String description;
 
-    @NotBlank
-    private String opportunityType;
+    @PositiveOrZero
+    private BigDecimal minimumAmount;
 
     @PositiveOrZero
-    private BigDecimal fundingAmount;
+    private BigDecimal maximumAmount;
 
     public Integer getCompanyId() {
         return companyId;
@@ -30,6 +32,14 @@ public class OpportunityRequest {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Integer getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Integer interestId) {
+        this.interestId = interestId;
     }
 
     public String getTitle() {
@@ -48,19 +58,19 @@ public class OpportunityRequest {
         this.description = description;
     }
 
-    public String getOpportunityType() {
-        return opportunityType;
+    public BigDecimal getMinimumAmount() {
+        return minimumAmount;
     }
 
-    public void setOpportunityType(String opportunityType) {
-        this.opportunityType = opportunityType;
+    public void setMinimumAmount(BigDecimal minimumAmount) {
+        this.minimumAmount = minimumAmount;
     }
 
-    public BigDecimal getFundingAmount() {
-        return fundingAmount;
+    public BigDecimal getMaximumAmount() {
+        return maximumAmount;
     }
 
-    public void setFundingAmount(BigDecimal fundingAmount) {
-        this.fundingAmount = fundingAmount;
+    public void setMaximumAmount(BigDecimal maximumAmount) {
+        this.maximumAmount = maximumAmount;
     }
 }
